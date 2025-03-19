@@ -10,8 +10,4 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('novarota')
-  getNewRoute(){
-    return "Essa é uma nova rota!"
-  }
 }
