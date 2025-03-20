@@ -10,7 +10,7 @@ export class TasksController {
         return this.TasksService.findAll()
     }
 
-    @Get('/1')
+    @Get('1')
     findOneTasks(){
         return this.TasksService.findOne()
     }
