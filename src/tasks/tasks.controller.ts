@@ -9,4 +9,9 @@ export class TasksController {
     findAllTaks(){
         return this.TasksService.findAll()
     }
+
+    @Get('/1')
+    findOneTasks(){
+        return this.TasksService.findOne()
+    }
 }
