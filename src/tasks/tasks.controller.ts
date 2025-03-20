@@ -1,12 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 
 @Controller('tasks')
-export class TasksController {
-
-    @Get()
-    FindAllTasks(){
-        return('Buscando todas as rotas!')
-    }
-
-
-}
+export class TasksController {}
