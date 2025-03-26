@@ -9,31 +9,36 @@ export class TasksService {
             id: 1,
             name: "NestJS",
             description: "Primeira tarefa",
+            completed: false
+        },
+        {
+            id: 2,
+            name: "NestJS",
+            description: "Segunda tarefa",
             completed: true
         }
 
     ]
 
-
     findAll(){
-        return[
-            {
-                id: 1,
-                name: "Aprendendo NestJS1"
-            },
-            {
-                id: 2,
-                name: "Aprendendo NestJS2"
-            }
-        ]
+        return this.tasks
     }
 
     findOne(id: string){
-        return "Tarefa de id: " + id
+        return this.tasks.find(task => task.id === Number(id))
     }
 
     create(body: any){
-        return body
+        const newId = this.tasks.length + 1
+
+        const newTasks = {
+            id: newId,
+            ...body
+        }
+
+        this.tasks.push(newTasks)
+        
+        return newTasks
     }
 
     update(id: string, body: any){
