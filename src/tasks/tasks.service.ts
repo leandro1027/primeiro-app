@@ -20,4 +20,8 @@ export class TasksService {
         return "Tarefa de id: " + id
     }
 
+    create(body: any){
+        return body
+    }
+
 }

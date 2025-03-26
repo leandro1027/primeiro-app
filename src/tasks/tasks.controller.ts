@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 
 @Controller('tasks')
@@ -17,7 +17,12 @@ export class TasksController {
 
     @Post()
     createTasks(@Body() body: any){
-        console.log(body)
-        return "Tarefa cadastrada com sucesso!"
+        return this.TasksService.create(body)
+    }
+
+    @Patch(':id')
+    updateTaks(@Param('id') id: string, @Body() body: any){
+
     }
 }
+
