@@ -7,11 +7,11 @@ export class TeachersService {
         return[
             {
                 id: 1,
-                task: "Aprendendo NestJS1"
+                teacher: "Professor 1"
             },
             {
                 id: 2,
-                task: "Aprendendo NestJS2"
+                teacher: "Professor 2"
             }
         ]
     }
