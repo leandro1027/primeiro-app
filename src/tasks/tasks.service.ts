@@ -16,7 +16,7 @@ export class TasksService {
         ]
     }
 
-    findOne(){
+    findOne(id: string){
         return "Retornando apenas uma tarefa!"
     }
 
