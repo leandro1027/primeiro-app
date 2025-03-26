@@ -24,4 +24,13 @@ export class TasksService {
         return body
     }
 
+    update(id: string, body: any){
+        return "Atualizando o id: " + id
+
+    }
+
+    remove(id: string){
+        return "Deletando o id: " + id
+    }
+
 }
