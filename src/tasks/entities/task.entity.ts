@@ -1,5 +1,6 @@
 export class Task{
     id: number
     nome: string
-    description: boolean
+    description: string
+    completed: boolean
 }
