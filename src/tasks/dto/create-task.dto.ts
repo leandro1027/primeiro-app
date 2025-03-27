@@ -5,6 +5,8 @@ Objetivo: Validar dados, transformar.
 */
 
 export class CreateTaskDto{
+    readonly name: string
+    readonly description: string
 
 }
 
