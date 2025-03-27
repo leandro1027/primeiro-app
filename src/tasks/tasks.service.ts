@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Task } from './entities/task.entity';
+import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 
 @Injectable()
 export class TasksService {
@@ -25,7 +26,10 @@ export class TasksService {
     }
 
     findOne(id: string){
-        return this.tasks.find(task => task.id === Number(id))
+        const task = this.tasks.find(task => task.id === Number(id))
+
+        if(task) return task
+        throw new HttpException("Essa tarefa não existe!", HttpStatus.NOT_FOUND)
     }
 
     create(body: any){
