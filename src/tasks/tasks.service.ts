@@ -42,7 +42,16 @@ export class TasksService {
     }
 
     update(id: string, body: any){
-        return "Atualizando o id: " + id
+        const taskIndex = this.tasks.findIndex(task => task.id === Number(id))
+
+        if(taskIndex >= 0){
+            const taskItem = this.tasks[taskIndex]
+
+            this.tasks[taskIndex] = {
+                ...taskItem,
+                ...body
+            }
+        }
 
     }
 
