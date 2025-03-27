@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Task } from './entities/task.entity';
 import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 
 @Injectable()
 export class TasksService {
@@ -32,12 +34,13 @@ export class TasksService {
         throw new HttpException("Essa tarefa não existe!", HttpStatus.NOT_FOUND)
     }
 
-    create(body: any){
+    create(CreateTaskDto: CreateTaskDto){
         const newId = this.tasks.length + 1
 
         const newTasks = {
             id: newId,
-            ...body
+            ...CreateTaskDto,
+            completed: false
         }
 
         this.tasks.push(newTasks)
@@ -45,7 +48,7 @@ export class TasksService {
         return newTasks
     }
 
-    update(id: string, body: any){
+    update(id: string, updateTaskDto: UpdateTaskDto){
         const taskIndex = this.tasks.findIndex(task => task.id === Number(id))
 
         if(taskIndex < 0)
@@ -55,7 +58,7 @@ export class TasksService {
 
             this.tasks[taskIndex] = {
                 ...taskItem,
-                ...body
+                ...updateTaskDto
             }
         
         return "Tarefa atualizada!"
