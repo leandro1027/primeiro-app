@@ -28,7 +28,7 @@ export class GuestsController {
     }
 
     @Delete(':id')
-    
-
-    
+    removeGuests(@Param('id') id:string){
+        return this.GuestsService.remove(id)
+    }
 }
