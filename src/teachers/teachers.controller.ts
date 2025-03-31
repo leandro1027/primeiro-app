@@ -10,7 +10,7 @@ export class TeachersController {
         return this.TeachersService.findAll()
     }
 
-    @Get('1')
+    @Get()
     findOneTeachers(){
         return this.TeachersService.findOne()
     }

@@ -4,16 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class TeachersService {
 
     findAll(){
-        return[
-            {
-                id: 1,
-                teacher: "Professor 1"
-            },
-            {
-                id: 2,
-                teacher: "Professor 2"
-            }
-        ]
+       
     }
 
     findOne(){
