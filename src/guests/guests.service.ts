@@ -23,4 +23,15 @@ export class GuestsService {
         if(guest) return guest
     throw new HttpException("Esse convidado não existe!", HttpStatus.NOT_FOUND)
     }
+
+    remove(id: string){
+        const guestIndex = this.guests.findIndex(guest => guest.id === Number(id))
+
+        if (guestIndex < 0)
+            throw new HttpException("Esse convidado não existe!", HttpStatus.NOT_FOUND)
+
+        this. guests.splice(guestIndex, 1)
+
+        return "Convidado deletado!"
+    }
 }
