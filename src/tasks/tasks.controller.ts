@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -8,12 +8,12 @@ export class TasksController {
     constructor(private readonly TasksService : TasksService){}
 
     @Get()
-    findAllTaks(@Query() queryParam: any){
+    findAllTasks(@Query("Limit") Limit: string){
         return this.TasksService.findAll()
     }
 
     @Get(':id')
-    findOneTasks(@Param('id') id: string){
+    findOneTasks(@Param('id', ParseIntPipe) id: number){
         return this.TasksService.findOne(id)
     }
 
@@ -23,13 +23,13 @@ export class TasksController {
     }
 
     @Patch(':id')
-    updateTaks(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto){
+    updateTasks(@Param('id') id: number, @Body() updateTaskDto: UpdateTaskDto){
         return this.TasksService.update(id, updateTaskDto)
 
     }
 
     @Delete(':id')
-    removeTasks(@Param('id') id: string){
+    removeTasks(@Param('id') id: number){
         return this.TasksService.remove(id)
 
     }
