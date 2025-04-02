@@ -1,5 +1,7 @@
-export class UpdateTeacherDto{
+export class UpdateUserDto{
+
     readonly name?: string
-    readonly wage?: string
-    readonly matricula?: string
+    readonly adress?: string
+    readonly email?: string
 }
+   

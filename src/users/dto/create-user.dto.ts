@@ -1,6 +1,7 @@
-export class CreateTeacherDto{
+export class CreateUserDto{
+   
     readonly name: string
-    readonly wage: string
-    readonly matricula: string
+    readonly adress: string
+    readonly email: string
 }
    
