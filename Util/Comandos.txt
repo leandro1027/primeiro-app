@@ -8,5 +8,5 @@ npm install class-validator
 npm install class-transformer
 https://docs.nestjs.com/techniques/validation
 
-//Partial types
+//Partial-types
 npm install @nestjs/mapped-types
