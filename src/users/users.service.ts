@@ -34,7 +34,7 @@ export class UsersService {
         const user = this.users.find(user => user.id === id)
 
         if(user) return user
-        throw new HttpException("Essa tarefa não existe!", HttpStatus.NOT_FOUND)
+        throw new HttpException("Esse usuário não existe!", HttpStatus.NOT_FOUND)
     }
 
     create(createUserDto: CreateUserDto){
@@ -75,7 +75,7 @@ export class UsersService {
 
         this.users.splice(userIndex, 1)
 
-        return "Tarefa deletada!"
+        return "Usuário deletado!"
     }
 
 }
