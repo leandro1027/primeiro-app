@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
+import { ValidationPipe } from '@nestjs/common';
 
 /*
 - app.module.ts : É o móudlo principal do aplicativo
@@ -11,6 +12,7 @@ import { AppModule } from './app/app.module';
 //Metodo que inicia o projeto
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe) // Trabalhar com validação global
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
