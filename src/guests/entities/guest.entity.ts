@@ -3,4 +3,5 @@ export class guest {
     name: string
     cpf: string
     adress: string
+    presence: boolean
 }

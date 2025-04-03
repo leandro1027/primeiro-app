@@ -11,8 +11,10 @@ export class GuestsService {
         {
             id: 1,
             name: "Leandro",
-            cpf: "11111111 tarefa",
-            adress: "Endereço aleatório"
+            cpf: "11111111",
+            adress: "Endereço aleatório",
+            presence: false
+
         }
     ]
 
@@ -33,6 +35,7 @@ export class GuestsService {
         const newGuests = {
             id: newId,
             ...CreateGuestDto,
+            presence:false
         
         }
 
