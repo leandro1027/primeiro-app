@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Teacher } from './entities/teacher.entity';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { register } from 'module';
 
 @Injectable()
 export class TeachersService {
@@ -10,7 +11,8 @@ export class TeachersService {
             id: 1,
             name: "Leandro",
             wage: "10000",
-            matricula: "1",
+            register: "1",
+            concurred: true
         }
     ];
 
@@ -32,6 +34,7 @@ export class TeachersService {
         const newTeacher = {
             id: newId,
             ...createTeacherDto,
+            concurred: false
         };
 
         this.teachers.push(newTeacher);

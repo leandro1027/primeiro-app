@@ -12,6 +12,6 @@ export class CreateTeacherDto{
     readonly wage: string
 
     @IsNotEmpty({message: "A matricula não pode ser vazia!"})
-    readonly matricula: string
+    readonly register: string
 }
    
