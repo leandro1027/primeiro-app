@@ -9,7 +9,6 @@ import { IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from "class-va
 
 export class CreateTaskDto{
     @IsString({message: "O nome precisa ser um texto!"})
-    @MinLength(5, {message: "O nome precisa ter no minimo 5 caracteres!"})
     @MaxLength(20, {message: "O nome precisa ter no máximo 20 caracteres!"})
     @IsNotEmpty({message: "O nome não pode ser vazio!"})
     readonly name: string
