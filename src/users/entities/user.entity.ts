@@ -3,4 +3,5 @@ export class User{
     name: string
     adress: string
     email: string
+    active: boolean
 }

@@ -13,14 +13,16 @@ export class UsersService {
             id: 1,
             name: "NestJS",
             adress: "teste",
-            email: "leandro@gmail.com"
+            email: "leandro@gmail.com",
+            active: false
            
         },
         {
             id: 2,
             name: "NestJS",
             adress: "teste",
-            email: "leandro@gmail.com"
+            email: "leandro@gmail.com",
+            active: false
             
         }
 
@@ -42,7 +44,8 @@ export class UsersService {
 
         const newUser = {
             id: newId,
-            ...createUserDto
+            ...createUserDto,
+            active: false
         }
 
         this.users.push(newUser)
