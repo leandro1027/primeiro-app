@@ -1,11 +1,15 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Catch, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Task } from './entities/task.entity';
 import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { retry } from 'rxjs';
 
 @Injectable()
 export class TasksService {
+
+    constructor(private readonly prismaService: PrismaService){}
 
     private tasks: Task[] = [
         {
@@ -23,57 +27,83 @@ export class TasksService {
 
     ]
 
-    findAll(){
-        return this.tasks
+
+    async findAll(){
+        const allTasks = await this.prismaService.task.findMany()
+        return allTasks
     }
 
-    findOne(id: number){
-        const task = this.tasks.find(task => task.id === id)
+   async findOne(id: number){
+        const task = await this.prismaService.task.findFirst({
+            where: {
+                id:id
+            }
+        })
 
-        if(task) return task
+        if(task?.name) return task
         throw new HttpException("Essa tarefa não existe!", HttpStatus.NOT_FOUND)
     }
 
-    create(CreateTaskDto: CreateTaskDto){
-        const newId = this.tasks.length + 1
-
-        const newTasks = {
-            id: newId,
-            ...CreateTaskDto,
-            completed: false
-        }
-
-        this.tasks.push(newTasks)
-        
-        return newTasks
-    }
-
-    update(id: number, updateTaskDto: UpdateTaskDto){
-        const taskIndex = this.tasks.findIndex(task => task.id === id)
-
-        if(taskIndex < 0)
-            throw new HttpException("Essa tarefa não existe!", HttpStatus.NOT_FOUND)
-       
-            const taskItem = this.tasks[taskIndex]
-
-            this.tasks[taskIndex] = {
-                ...taskItem,
-                ...updateTaskDto
+   async create(CreateTaskDto: CreateTaskDto){
+    try{
+        const newTasks = this.prismaService.task.create({
+            data:{
+                name: CreateTaskDto.name,
+                description: CreateTaskDto.description,
+                completed: false
             }
-        
-        return "Tarefa atualizada!"
-
+        })
+        return newTasks
+    }catch(e){
+        throw new HttpException("Não possivel cadastrar a tarefa!", HttpStatus.BAD_REQUEST)
     }
+   }
 
-    remove(id: number){
-        const taskIndex = this.tasks.findIndex(task => task.id === id)
-
-        if(taskIndex < 0)
+   async update(id: number, updateTaskDto: UpdateTaskDto){
+       try{
+        const findTask = await this.prismaService.task.findFirst({
+            where: {
+                id: id
+            }
+        })
+        
+        if(!findTask)
             throw new HttpException("Essa tarefa não existe!", HttpStatus.NOT_FOUND)
 
-        this.tasks.splice(taskIndex, 1)
+        const task = await  this.prismaService.task.update({
+            where: {
+                id: findTask.id
+            },
+            data: updateTaskDto
+        })
+        return task
+       } catch(e){
+        throw new HttpException("Não foi possivel atualizar a tarefa!", HttpStatus.BAD_REQUEST)
+       }
 
-        return "Tarefa deletada!"
     }
+
+   async delete(id: number){
+        try{
+            const findTask = await this.prismaService.task.findFirst({
+                where: {
+                    id: id
+                }
+            })
+
+            if(!findTask)
+                throw new HttpException("Essa tarefa não existe!", HttpStatus.NOT_FOUND)
+
+                await this.prismaService.task.delete({
+                    where:{
+                        id: findTask.id
+                    }
+                })
+
+                return "Tarefa excluida com sucesso!"
+            }catch(e){
+                throw new HttpException("Não possivel deletar a tarefa!", HttpStatus.BAD_REQUEST)
+            }
+        }
 
 }
