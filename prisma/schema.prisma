@@ -39,7 +39,7 @@ model Teacher{
   name String
   wage String
   register String
-  concursed Boolean
+  concurred Boolean
 
   created DateTime? @default(now())
 }

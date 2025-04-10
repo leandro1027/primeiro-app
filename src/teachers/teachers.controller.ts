@@ -2,18 +2,19 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query 
 import { TeachersService } from './teachers.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('teachers')
 export class TeachersController {
     constructor(private readonly teachersService: TeachersService) {}
 
     @Get()
-    findAllTeachers(@Query() queryParam: any) {
-        return this.teachersService.findAll();
+    findAllTeachers(@Query()  paginationDto: PaginationDto) {
+        return this.teachersService.findAll(paginationDto);
     }
 
     @Get(':id')
-    findOneTeacher(@Param('id', ParseIntPipe) id: string) {
+    findOneTeacher(@Param('id', ParseIntPipe) id: number) {
         return this.teachersService.findOne(id);
     }
 
@@ -23,12 +24,12 @@ export class TeachersController {
     }
 
     @Patch(':id')
-    updateTeacher(@Param('id', ParseIntPipe) id: string, @Body() updateTeacherDto: UpdateTeacherDto) {
+    updateTeacher(@Param('id', ParseIntPipe) id: number, @Body() updateTeacherDto: UpdateTeacherDto) {
         return this.teachersService.update(id, updateTeacherDto);
     }
 
     @Delete(':id')
-    removeTeacher(@Param('id', ParseIntPipe) id: string) {
-        return this.teachersService.remove(id);
+    removeTeacher(@Param('id', ParseIntPipe) id: number) {
+        return this.teachersService.delete(id);
     }
 }
