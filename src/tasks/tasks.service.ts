@@ -12,22 +12,6 @@ export class TasksService {
 
     constructor(private readonly prismaService: PrismaService){}
 
-    private tasks: Task[] = [
-        {
-            id: 1,
-            name: "NestJS",
-            description: "Primeira tarefa",
-            completed: false
-        },
-        {
-            id: 2,
-            name: "NestJS",
-            description: "Segunda tarefa",
-            completed: true
-        }
-
-    ]
-
     async findAll(paginationDto: PaginationDto){
         const {limit = 10, offset = 0 } = paginationDto
 

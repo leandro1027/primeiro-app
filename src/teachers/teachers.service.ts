@@ -10,16 +10,6 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 export class TeachersService {
     constructor(private readonly prismaService: PrismaService){}
   
-    private teachers: Teacher[] = [
-        {
-            id: 1,
-            name: "Leandro",
-            wage: "10000",
-            register: "1",
-            concurred: false
-        }
-    ];
-
     async findAll(paginationDto: PaginationDto){
             const {limit = 10, offset = 0 } = paginationDto
     

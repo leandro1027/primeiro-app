@@ -11,25 +11,6 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 export class UsersService {
     constructor(private readonly prismaService : PrismaService){}
 
-    private users: User[] = [
-        {
-            id: 1,
-            name: "NestJS",
-            adress: "teste",
-            email: "leandro@gmail.com",
-            active: false
-           
-        },
-        {
-            id: 2,
-            name: "NestJS",
-            adress: "teste",
-            email: "leandro@gmail.com",
-            active: false
-            
-        }
-
-    ]
  async findAll(paginationDto: PaginationDto){
         const {limit = 10, offset = 0 } = paginationDto
 
@@ -111,7 +92,7 @@ export class UsersService {
                     }
                 })
 
-                return "usuário excluida com sucesso!"
+                return "usuário excluido com sucesso!"
             }catch(e){
                 throw new HttpException("Não possivel deletar o usuário!", HttpStatus.BAD_REQUEST)
             }
