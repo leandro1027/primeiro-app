@@ -3,10 +3,13 @@ import { User } from './entities/user.entity';
 import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 
 @Injectable()
 export class UsersService {
+    constructor(private readonly prismaService : PrismaService){}
 
     private users: User[] = [
         {
@@ -27,58 +30,91 @@ export class UsersService {
         }
 
     ]
+ async findAll(paginationDto: PaginationDto){
+        const {limit = 10, offset = 0 } = paginationDto
 
-    findAll(){
-        return this.users
+        const allusers = await this.prismaService.user.findMany({
+            take: limit,
+            skip: offset,
+            orderBy: {
+                created: 'desc'
+            }
+        })
+        return allusers
     }
 
-    findOne(id: number){
-        const user = this.users.find(user => user.id === id)
+   async findOne(id: number){
+        const user = await this.prismaService.user.findFirst({
+            where: {
+                id:id
+            }
+        })
 
-        if(user) return user
+        if(user?.name) return user
         throw new HttpException("Esse usuário não existe!", HttpStatus.NOT_FOUND)
     }
 
-    create(createUserDto: CreateUserDto){
-        const newId = this.users.length + 1
-
-        const newUser = {
-            id: newId,
-            ...createUserDto,
-            active: false
-        }
-
-        this.users.push(newUser)
-        
-        return newUser
-    }
-
-    update(id: number, updateUserDto: UpdateUserDto){
-        const userIndex = this.users.findIndex(user => user.id === id)
-
-        if(userIndex < 0)
-            throw new HttpException("Esse Usuário não existe!", HttpStatus.NOT_FOUND)
-       
-            const userItem = this.users[userIndex]
-
-            this.users[userIndex] = {
-                ...userItem,
-                ...updateUserDto
+   async create(CreateuserDto: CreateUserDto){
+    try{
+        const newusers = this.prismaService.user.create({
+            data:{
+                name: CreateuserDto.name,
+                adress: CreateuserDto.adress,
+                email: CreateuserDto.email,
+                active: false
             }
-        
-        return "Usuário atualizado!"
-
+        })
+        return newusers
+    }catch(e){
+        throw new HttpException("Não possivel cadastrar o usuário!", HttpStatus.BAD_REQUEST)
     }
+   }
 
-    remove(id: number){
-        const userIndex = this.users.findIndex(user => user.id === id)
-
-        if(userIndex < 0)
+   async update(id: number, updateuserDto: UpdateUserDto){
+       try{
+        const finduser = await this.prismaService.user.findFirst({
+            where: {
+                id: id
+            }
+        })
+        
+        if(!finduser)
             throw new HttpException("Esse usuário não existe!", HttpStatus.NOT_FOUND)
 
-        this.users.splice(userIndex, 1)
+        const user = await  this.prismaService.user.update({
+            where: {
+                id: finduser.id
+            },
+            data: updateuserDto
+        })
+        return user
+       } catch(e){
+        throw new HttpException("Não foi possivel atualizar o usuário!", HttpStatus.BAD_REQUEST)
+       }
 
-        return "Usuário deletado!"
     }
+
+   async delete(id: number){
+        try{
+            const finduser = await this.prismaService.user.findFirst({
+                where: {
+                    id: id
+                }
+            })
+
+            if(!finduser)
+                throw new HttpException("Esse usuário não existe!", HttpStatus.NOT_FOUND)
+
+                await this.prismaService.user.delete({
+                    where:{
+                        id: finduser.id
+                    }
+                })
+
+                return "usuário excluida com sucesso!"
+            }catch(e){
+                throw new HttpException("Não possivel deletar o usuário!", HttpStatus.BAD_REQUEST)
+            }
+        }
 
 }
