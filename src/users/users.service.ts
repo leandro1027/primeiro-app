@@ -18,7 +18,7 @@ export class UsersService {
             take: limit,
             skip: offset,
             orderBy: {
-                created: 'desc'
+                created: 'desc
             }
         })
         return allusers
