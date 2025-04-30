@@ -10,6 +10,7 @@ export class LoggerInterceptor implements NestInterceptor{
         const url = request.url
         const now = Date.now()
 
+        console.log(request['user'])
         console.log(`[REQUEST] ${method} ${url} - início da req`)
         return next.handle().pipe(
             tap(() => {
