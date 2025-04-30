@@ -48,6 +48,7 @@ export class UsersService {
                 name: CreateuserDto.name,
                 adress: CreateuserDto.adress,
                 email: CreateuserDto.email,
+                passwordHash: CreateuserDto.password,
                 active: false
             }
         })

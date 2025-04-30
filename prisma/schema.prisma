@@ -53,6 +53,7 @@ model User{
   adress String
   email String
   active Boolean
+  passwordHash String
 
   created DateTime? @default(now())
   task Task[]
