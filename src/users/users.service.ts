@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { useContainer } from 'class-validator';
 
 
 @Injectable()
@@ -50,6 +51,12 @@ export class UsersService {
                 email: CreateuserDto.email,
                 passwordHash: CreateuserDto.password,
                 active: false
+            },
+            select:{
+                id: true,
+                name: true,
+                email: true,
+                active: true
             }
         })
         return newusers
@@ -60,22 +67,31 @@ export class UsersService {
 
    async update(id: number, updateuserDto: UpdateUserDto){
        try{
-        const finduser = await this.prismaService.user.findFirst({
+        const user = await this.prismaService.user.findFirst({
             where: {
                 id: id
             }
         })
         
-        if(!finduser)
+        if(!user)
             throw new HttpException("Esse usuário não existe!", HttpStatus.NOT_FOUND)
 
-        const user = await  this.prismaService.user.update({
+        const updateUser = await  this.prismaService.user.update({
             where: {
-                id: finduser.id
+                id: user.id
             },
-            data: updateuserDto
+            data: {
+                name: updateuserDto.name ? updateuserDto.name : user.name,
+                passwordHash: updateuserDto.password ? updateuserDto.password : user.passwordHash,
+            },
+            select:{
+                id:true,
+                name: true,
+                email: true
+            }
+
         })
-        return user
+        return updateUser
        } catch(e){
         throw new HttpException("Não foi possivel atualizar o usuário!", HttpStatus.BAD_REQUEST)
        }
@@ -84,18 +100,18 @@ export class UsersService {
 
    async delete(id: number){
         try{
-            const finduser = await this.prismaService.user.findFirst({
+            const user = await this.prismaService.user.findFirst({
                 where: {
                     id: id
                 }
             })
 
-            if(!finduser)
+            if(!user)
                 throw new HttpException("Esse usuário não existe!", HttpStatus.NOT_FOUND)
 
                 await this.prismaService.user.delete({
                     where:{
-                        id: finduser.id
+                        id: user.id
                     }
                 })
 

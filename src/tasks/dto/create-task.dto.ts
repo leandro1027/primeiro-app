@@ -5,7 +5,7 @@ Objetivo: Validar dados, transformar.
 */
 
 import { MESSAGES } from "@nestjs/core/constants"
-import { IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from "class-validator"
+import { IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, MinLength } from "class-validator"
 
 export class CreateTaskDto{
     @IsString({message: "O nome precisa ser um texto!"})
@@ -17,5 +17,9 @@ export class CreateTaskDto{
     @IsNotEmpty({message: "A descrição não pode ser vazia!"})
     @MaxLength(100, {message: "A descrição precisa ter no máximo 100 caracteres!"})
     readonly description: string
+
+    @IsNumber()
+    @IsNotEmpty()
+    readonly userId: number
 
 }
