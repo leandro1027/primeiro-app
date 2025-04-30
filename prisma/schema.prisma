@@ -21,6 +21,9 @@ model Task{
   completed Boolean
 
   created DateTime? @default(now())
+  userId Int?
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
 }
 
 model Guest{
@@ -52,4 +55,5 @@ model User{
   active Boolean
 
   created DateTime? @default(now())
+  task Task[]
 }

@@ -28,6 +28,12 @@ export class UsersService {
         const user = await this.prismaService.user.findFirst({
             where: {
                 id:id
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                active: true
             }
         })
 
