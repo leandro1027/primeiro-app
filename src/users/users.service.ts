@@ -34,7 +34,8 @@ export class UsersService {
                 id: true,
                 name: true,
                 email: true,
-                active: true
+                active: true,
+                task: true
             }
         })
 

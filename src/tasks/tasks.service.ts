@@ -42,7 +42,8 @@ export class TasksService {
             data:{
                 name: CreateTaskDto.name,
                 description: CreateTaskDto.description,
-                completed: false
+                completed: false,
+                userId: CreateTaskDto.userId
             }
         })
         return newTasks
