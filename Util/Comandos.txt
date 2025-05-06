@@ -10,3 +10,5 @@ https://docs.nestjs.com/techniques/validation
 
 //Partial-types
 npm install @nestjs/mapped-types
+
+nest g module auth
