@@ -6,11 +6,15 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { useContainer } from 'class-validator';
+import { HashingServiceProtocol } from 'src/auth/hash/hashing.service';
 
 
 @Injectable()
 export class UsersService {
-    constructor(private readonly prismaService : PrismaService){}
+    constructor(
+        private  prismaService : PrismaService,
+        private readonly hashingService: HashingServiceProtocol
+    ){}
 
  async findAll(paginationDto: PaginationDto){
         const {limit = 10, offset = 0 } = paginationDto
@@ -77,13 +81,22 @@ export class UsersService {
         if(!user)
             throw new HttpException("Esse usuário não existe!", HttpStatus.NOT_FOUND)
 
+        const dataUser: { name?: string, passwordHash?: string} = {
+            name: updateuserDto.name ? updateuserDto.name : user.name
+        }
+
+        if (updateuserDto?.password){
+            const passwordHash = await this.hashingService.hash(updateuserDto?.password)
+            dataUser['passwordHash'] = passwordHash
+        }
+
         const updateUser = await  this.prismaService.user.update({
             where: {
                 id: user.id
             },
             data: {
-                name: updateuserDto.name ? updateuserDto.name : user.name,
-                passwordHash: updateuserDto.password ? updateuserDto.password : user.passwordHash,
+                name: dataUser.name,
+                passwordHash: dataUser?.passwordHash ? dataUser?.passwordHash : user.passwordHash
             },
             select:{
                 id:true,

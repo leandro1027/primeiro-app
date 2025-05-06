@@ -6,10 +6,11 @@ import { usersModule } from 'src/users/users.module';
 import { LoggerMiddleware } from 'src/common/middlewares/logger.middlewares';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthAdminGuard } from 'src/common/guards/admin.guard';
+import { AuthModule } from 'src/auth/auth.module';
 
 
 @Module({
-  imports: [TasksModule, usersModule],
+  imports: [TasksModule, usersModule, AuthModule],
   controllers: [AppController],
   providers: [
     AppService,
