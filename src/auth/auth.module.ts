@@ -23,7 +23,9 @@ import { JwtModule } from '@nestjs/jwt';
         useClass: BcryptService
     }, AuthService],
     exports:[
-        HashingServiceProtocol
+        HashingServiceProtocol,
+        JwtModule,
+        ConfigModule
     ],
     controllers: [AuthController]
 })
